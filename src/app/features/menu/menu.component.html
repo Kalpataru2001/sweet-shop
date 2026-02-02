@@ -1,0 +1,20 @@
+<section class="min-h-screen bg-gray-50 pt-28 pb-12 px-6">
+  <div class="container mx-auto">
+    
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-2">Our Sweet <span class="text-orange-600">Collection</span></h2>
+      <p class="text-gray-500">Pick your favorites from our wide range of delicacies</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <app-sweet-card 
+        *ngFor="let sweetItem of sweets; let i = index" 
+        [sweet]="sweetItem"
+        data-aos="fade-up"
+        [attr.data-aos-delay]="i * 100"
+        data-aos-duration="1000">
+      </app-sweet-card>
+    </div>
+
+  </div>
+</section>
