@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,9 +11,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
-isScrolled = false;
+  isScrolled = false;
   isMobileMenuOpen = false;
-
+  cartService = inject(CartService);
+  totalItems = this.cartService.totalItems;
+  
   // Listen for scroll events on the window
   @HostListener('window:scroll', [])
   onWindowScroll() {

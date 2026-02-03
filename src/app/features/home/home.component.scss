@@ -2,3 +2,18 @@
 :host {
   display: block;
 }
+
+/* Infinite Marquee Animation */
+@keyframes infinite-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-infinite-scroll {
+  animation: infinite-scroll 25s linear infinite;
+  width: max-content;
+}
+
+.animate-infinite-scroll:hover {
+  animation-play-state: paused;
+}

@@ -3,10 +3,11 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Rout
 import AOS from 'aos';
 import { LoaderComponent } from './shared/components/loader/loader.component';
 import { CommonModule } from '@angular/common';
+import { CartDrawerComponent } from './shared/components/cart-drawer/cart-drawer.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule,RouterOutlet,LoaderComponent],
+  imports: [CommonModule,RouterOutlet,LoaderComponent,CartDrawerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
