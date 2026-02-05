@@ -1,19 +1,21 @@
-<section class="min-h-screen bg-gray-50 pt-28 pb-12 px-6">
+<section class="min-h-screen bg-gray-50 dark:bg-gray-900 pt-28 pb-12 px-6 transition-colors duration-300">
   <div class="container mx-auto">
     
     <div class="text-center mb-8">
-      <h2 class="text-4xl font-bold text-gray-800 mb-2">Our Sweet <span class="text-orange-600">Collection</span></h2>
-      <p class="text-gray-500">Pick your favorites from our wide range of delicacies</p>
+      <h2 class="text-4xl font-bold text-gray-800 dark:text-white mb-2">Our Sweet <span class="text-orange-600">Collection</span></h2>
+      <p class="text-gray-500 dark:text-gray-400">Pick your favorites from our wide range of delicacies</p>
     </div>
 
-    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm mb-12 flex flex-col md:flex-row gap-6 justify-between items-center border border-gray-100">
+    <div class="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl shadow-sm mb-12 flex flex-col md:flex-row gap-6 justify-between items-center border border-gray-100 dark:border-gray-700 transition-colors">
       
       <div class="flex flex-wrap gap-2">
         <button 
           *ngFor="let cat of categories" 
           (click)="setCategory(cat)"
           class="px-5 py-2 rounded-full font-medium transition-all duration-300 shadow-sm"
-          [ngClass]="selectedCategory() === cat ? 'bg-orange-600 text-white shadow-orange-500/30' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+          [ngClass]="selectedCategory() === cat 
+            ? 'bg-orange-600 text-white shadow-orange-500/30' 
+            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'">
           {{ cat }}
         </button>
       </div>
@@ -24,7 +26,7 @@
           [value]="searchQuery()"
           (input)="onSearch($event)"
           placeholder="Search for ladoo, jamun..." 
-          class="w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+          class="w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-900/30 outline-none transition-all"
         >
         <span class="absolute left-4 top-3.5 text-gray-400">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -42,10 +44,10 @@
     </div>
 
     <ng-template #noResults>
-      <div class="text-center py-20 bg-white rounded-2xl border border-gray-100">
+      <div class="text-center py-20 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 transition-colors">
         <span class="text-6xl">🔍</span>
-        <h3 class="text-xl font-bold text-gray-800 mt-4">No sweets found</h3>
-        <p class="text-gray-500 mt-2">Try adjusting your search or category filter.</p>
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white mt-4">No sweets found</h3>
+        <p class="text-gray-500 dark:text-gray-400 mt-2">Try adjusting your search or category filter.</p>
         <button (click)="setCategory('All'); searchQuery.set('')" class="mt-4 text-orange-600 font-semibold hover:underline">Clear all filters</button>
       </div>
     </ng-template>

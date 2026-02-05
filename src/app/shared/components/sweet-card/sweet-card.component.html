@@ -1,39 +1,32 @@
-<div
-    class="group relative w-full bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-orange-100 cursor-pointer">
+<div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 flex flex-col h-full relative">
+  
+  <div class="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-700">
+    <img [src]="sweet.imageUrl" [alt]="sweet.name" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+    
+    <span *ngIf="sweet.tag" class="absolute top-3 left-3 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-md shadow-sm">
+      {{ sweet.tag }}
+    </span>
 
-    <div *ngIf="sweet.tag"
-        class="absolute top-3 right-3 z-10 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-        {{ sweet.tag }}
+    <button class="absolute top-3 right-3 p-2 bg-white/80 dark:bg-black/50 backdrop-blur-sm rounded-full text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="p-5 flex flex-col flex-1">
+    <div class="flex justify-between items-start mb-2">
+      <h3 class="text-xl font-bold text-gray-800 dark:text-white line-clamp-1">{{ sweet.name }}</h3>
+      <span class="text-lg font-bold text-orange-600 dark:text-orange-400">₹{{ sweet.price }}</span>
     </div>
 
-    <div class="h-48 overflow-hidden bg-gray-100 relative">
-        <img [src]="sweet.imageUrl" [alt]="sweet.name"
-            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
-        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        </div>
-    </div>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2 flex-1">{{ sweet.description }}</p>
 
-    <div class="p-5">
-        <div class="flex justify-between items-start mb-2">
-            <h3 class="text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors">
-                {{ sweet.name }}
-            </h3>
-            <span class="text-lg font-bold text-orange-600">
-                ₹{{ sweet.price }}
-            </span>
-        </div>
-
-        <p class="text-gray-500 text-sm mb-4 line-clamp-2">
-            {{ sweet.description }}
-        </p>
-
-        <button (click)="onAddToCart($event)"
-            class="w-full py-2 rounded-lg bg-orange-100 text-orange-600 font-semibold group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
-            <span>Add to Cart</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-        </button>
-    </div>
+    <button (click)="onAddToCart($event)" class="w-full py-2 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 font-semibold group-hover:bg-orange-600 group-hover:text-white dark:group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
+      <span>Add to Cart</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+    </button>
+  </div>
 </div>
