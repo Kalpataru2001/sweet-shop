@@ -67,4 +67,7 @@ export class CartService {
       }
     });
   }
+  clearCart() {
+    this.cartItems.set([]); 
+  }
 }

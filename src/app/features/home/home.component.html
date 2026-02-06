@@ -62,7 +62,7 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <app-sweet-card *ngFor="let sweet of bestSellers; let i = index" [sweet]="sweet" data-aos="fade-up" [attr.data-aos-delay]="i * 100"></app-sweet-card>
+      <app-sweet-card *ngFor="let sweet of bestSellers(); let i = index" [sweet]="sweet" data-aos="fade-up" [attr.data-aos-delay]="i * 100"></app-sweet-card>
     </div>
     
     <div class="mt-12 text-center md:hidden">

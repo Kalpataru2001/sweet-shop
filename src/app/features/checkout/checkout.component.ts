@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
 import { Router } from '@angular/router';
+import { OrderService } from '../../core/services/order.service';
 
 @Component({
   selector: 'app-checkout',
@@ -12,36 +13,52 @@ import { Router } from '@angular/router';
   styleUrl: './checkout.component.scss'
 })
 export class CheckoutComponent {
-  private fb = inject(FormBuilder);
-  public cartService = inject(CartService);
-  private router = inject(Router);
+  cartService = inject(CartService);
+  orderService = inject(OrderService); // Inject it
+  fb = inject(FormBuilder);
+  router = inject(Router);
 
   orderPlaced = false;
+  isSubmitting = false; // New loading state
 
-  // Define the Form with Validation rules
   checkoutForm = this.fb.group({
     fullName: ['', [Validators.required, Validators.minLength(3)]],
     phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-    address: ['', Validators.required],
-    paymentMethod: ['cod', Validators.required] // Default to Cash on Delivery
+    address: ['', [Validators.required, Validators.minLength(10)]]
   });
 
   onSubmit() {
-    if (this.checkoutForm.valid && this.cartService.totalItems() > 0) {
-      // Simulate API call
-      console.log('Order Data:', this.checkoutForm.value);
-      console.log('Items Ordered:', this.cartService.getCartItems()());
+    if (this.checkoutForm.valid) {
+      this.isSubmitting = true; // Start loading
 
-      // Show Success UI
-      this.orderPlaced = true;
+      // 1. Prepare the Order Data
+      const orderData = {
+        customerName: this.checkoutForm.value.fullName!,
+        customerPhone: this.checkoutForm.value.phone!,
+        customerAddress: this.checkoutForm.value.address!,
+        totalAmount: this.cartService.totalPrice()
+      };
 
-      // Clear the cart
-      // (We need to add a clearCart() method in CartService, or just do this for now)
-      setTimeout(() => {
-        this.router.navigate(['/']); // Redirect to home after 4 seconds
-      }, 4000);
+      // 2. Send to API
+      this.orderService.placeOrder(orderData).subscribe({
+        next: (response) => {
+          console.log('Order Success:', response);
+          this.isSubmitting = false;
+          this.orderPlaced = true;
+          this.cartService.clearCart(); // Clear the cart on success
+
+          // Redirect after 3 seconds
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 3000);
+        },
+        error: (err) => {
+          console.error('Order Failed:', err);
+          this.isSubmitting = false;
+          alert('Failed to place order. Please try again.');
+        }
+      });
     } else {
-      // Touch all fields to show error messages
       this.checkoutForm.markAllAsTouched();
     }
   }
