@@ -14,4 +14,7 @@ export class OrderService {
   placeOrder(order: Order) {
     return this.http.post(this.apiUrl, order);
   }
+  getOrders() {
+    return this.http.get<Order[]>(this.apiUrl);
+  }
 }

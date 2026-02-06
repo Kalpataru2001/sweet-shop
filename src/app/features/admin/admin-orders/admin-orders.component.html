@@ -1,0 +1,50 @@
+<div class="container mx-auto pt-32 px-6">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Owner Dashboard</h2>
+    <button (click)="loadOrders()" class="text-orange-600 hover:text-orange-700 font-medium text-sm">
+      ↻ Refresh
+    </button>
+  </div>
+
+  <div *ngIf="loading()" class="flex flex-col items-center justify-center py-20">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mb-4"></div>
+    <p class="text-gray-500 animate-pulse">Fetching latest orders...</p>
+  </div>
+
+  <div *ngIf="!loading()" class="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+    <table class="w-full text-left">
+      <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200 uppercase text-sm">
+        <tr>
+          <th class="py-4 px-6">Date</th>
+          <th class="py-4 px-6">Customer</th>
+          <th class="py-4 px-6">Phone</th>
+          <th class="py-4 px-6">Address</th>
+          <th class="py-4 px-6 text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 dark:divide-gray-600">
+        <tr *ngFor="let order of orders()" class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+          <td class="py-4 px-6 text-gray-500 dark:text-gray-400">
+            {{ order.orderDate || 'Now' | date:'medium' }}
+          </td>
+          <td class="py-4 px-6 font-medium text-gray-800 dark:text-white">
+            {{ order.customerName }}
+          </td>
+          <td class="py-4 px-6 text-gray-500 dark:text-gray-400">
+            {{ order.customerPhone }}
+          </td>
+          <td class="py-4 px-6 text-gray-500 dark:text-gray-400">
+            {{ order.customerAddress }}
+          </td>
+          <td class="py-4 px-6 text-right font-bold text-orange-600">
+            ₹{{ order.totalAmount }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div *ngIf="orders().length === 0" class="p-8 text-center text-gray-500">
+      No orders received yet.
+    </div>
+  </div>
+</div>
