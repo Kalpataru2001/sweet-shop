@@ -8,6 +8,7 @@ import { CheckoutComponent } from './features/checkout/checkout.component';
 import { AdminOrdersComponent } from './features/admin/admin-orders/admin-orders.component';
 import { AdminLoginComponent } from './features/admin/admin-login/admin-login.component';
 import { authGuard } from './core/guards/auth.guard';
+import { AdminInventoryComponent } from './features/admin/admin-inventory/admin-inventory.component';
 
 export const routes: Routes = [
     {
@@ -25,6 +26,11 @@ export const routes: Routes = [
                 path: 'admin',
                 component: AdminOrdersComponent,
                 canActivate: [authGuard] 
+            },
+            {
+                path: 'admin/inventory',
+                component: AdminInventoryComponent,
+                canActivate: [authGuard]
             },
 
             { path: '**', redirectTo: '' }

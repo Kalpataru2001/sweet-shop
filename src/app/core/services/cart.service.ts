@@ -10,14 +10,13 @@ export class CartService {
   // 1. The State: A Signal holding an array of CartItems
   private cartItems = signal<CartItem[]>([]);
   public isCartOpen = signal<boolean>(false);
+  public totalItems = computed(() => this.cartItems().length);
+ 
   // 2. Computed values (automatically update when cartItems changes)
   // Counts total number of items
-  public totalItems = computed(() => 
-    this.cartItems().reduce((acc, item) => acc + item.quantity, 0)
-  );
-
+  
   // Calculates total price
-  public totalPrice = computed(() => 
+  public totalPrice = computed(() =>
     this.cartItems().reduce((acc, item) => acc + (item.sweet.price * item.quantity), 0)
   );
 
@@ -31,25 +30,32 @@ export class CartService {
     this.isCartOpen.update(val => !val);
   }
 
-  // Method to add items to cart
-  addToCart(sweet: Sweet) {
+  addToCart(sweet: Sweet, quantityToAdd: number = 1) { 
     this.cartItems.update(items => {
-      // Check if item already exists in cart
       const existingItem = items.find(item => item.sweet.id === sweet.id);
 
       if (existingItem) {
-        // If it exists, increase the quantity
-        return items.map(item => 
-          item.sweet.id === sweet.id 
-            ? { ...item, quantity: item.quantity + 1 } 
+        // Check Stock (Decimal aware)
+        const newQuantity = Number(existingItem.quantity) + Number(quantityToAdd);
+
+        if (newQuantity > sweet.stockQuantity) {
+          alert(`Sorry, only ${sweet.stockQuantity} ${sweet.unit} available!`);
+          return items;
+        }
+
+        return items.map(item =>
+          item.sweet.id === sweet.id
+            ? { ...item, quantity: newQuantity } // Use the calculated number
             : item
         );
       } else {
-        // If it's new, add it to the array with quantity 1
-        return [...items, { sweet, quantity: 1 }];
+        if (sweet.stockQuantity < quantityToAdd) {
+          alert(`Not enough stock!`);
+          return items;
+        }
+        return [...items, { sweet, quantity: Number(quantityToAdd) }];
       }
     });
-    
   }
 
   removeFromCart(sweetId: number) {
@@ -58,7 +64,7 @@ export class CartService {
       
       if (existingItem && existingItem.quantity > 1) {
         // Reduce quantity if more than 1
-        return items.map(item => 
+        return items.map(item =>
           item.sweet.id === sweetId ? { ...item, quantity: item.quantity - 1 } : item
         );
       } else {

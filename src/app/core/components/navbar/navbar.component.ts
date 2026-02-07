@@ -19,7 +19,6 @@ export class NavbarComponent {
   // Signals
   isMobileMenuOpen = signal(false);
   totalItems = this.cartService.totalItems;
-
   // State
   isScrolled = false;
 

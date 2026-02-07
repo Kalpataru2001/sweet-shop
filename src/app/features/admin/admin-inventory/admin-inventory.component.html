@@ -1,0 +1,122 @@
+<div class="container mx-auto pt-32 px-6 pb-12">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Inventory Management</h2>
+            <p class="text-gray-500 dark:text-gray-400">Manage products, prices, and stock.</p>
+        </div>
+        <button (click)="openAddModal()"
+            class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg flex items-center gap-2 transition-transform hover:scale-105">
+            <span>+</span> Add New Product
+        </button>
+    </div>
+
+    <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead
+                    class="bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-200 uppercase text-xs font-bold tracking-wider">
+                    <tr>
+                        <th class="py-4 px-6">Product</th>
+                        <th class="py-4 px-6">Category</th>
+                        <th class="py-4 px-6">Price</th>
+                        <th class="py-4 px-6">Stock</th>
+                        <th class="py-4 px-6">Type</th>
+                        <th class="py-4 px-6 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-600">
+                    <tr *ngFor="let sweet of sweets()" class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <td class="py-4 px-6 font-medium text-gray-800 dark:text-white">{{ sweet.name }}</td>
+                        <td class="py-4 px-6 text-gray-500 dark:text-gray-400">{{ sweet.category }}</td>
+                        <td class="py-4 px-6 font-bold text-gray-800 dark:text-gray-200">{{ sweet.price | rupeeFormat }}
+                            / {{ sweet.unit }}</td>
+                        <td class="py-4 px-6">{{ sweet.stockQuantity }}</td>
+                        <td class="py-4 px-6">
+                            <span class="px-2 py-1 text-xs rounded-full"
+                                [ngClass]="sweet.unit === 'kg' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'">
+                                {{ sweet.unit === 'kg' ? 'Dual Mode (Kg+Pc)' : 'Piece Only' }}
+                            </span>
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            <button (click)="openEditModal(sweet)" class="text-blue-600 mr-3">✏️</button>
+                            <button (click)="deleteSweet(sweet.id)" class="text-red-600">🗑️</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showModal()"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] flex justify-center items-center p-4">
+    <div class="bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+        <div class="bg-orange-600 p-5 flex justify-between items-center text-white">
+            <h3 class="font-bold text-xl">{{ isEditing() ? 'Edit Product' : 'Add New Product' }}</h3>
+            <button (click)="closeModal()" class="text-2xl">&times;</button>
+        </div>
+
+        <form [formGroup]="sweetForm" (ngSubmit)="onSubmit()" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+
+            <input formControlName="name" placeholder="Name (e.g. Rasgulla or Mixture)"
+                class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
+            <textarea formControlName="description" placeholder="Description" rows="2"
+                class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white"></textarea>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm text-gray-500">Price (₹)</label>
+                    <input formControlName="price" type="number"
+                        class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
+                </div>
+                <div>
+                    <label class="text-sm text-gray-500">Total Stock</label>
+                    <input formControlName="stockQuantity" type="number"
+                        class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Selling Mode</label>
+                <select formControlName="unit"
+                    class="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white">
+                    <option value="piece">Piece Only (e.g. Packet, Biscuit, Samosa)</option>
+                    <option value="kg">Dual Mode (Kg + Piece) (e.g. Rasgulla, Laddu)</option>
+                </select>
+            </div>
+
+            <div *ngIf="sweetForm.get('unit')?.value === 'kg'"
+                class="bg-orange-50 dark:bg-gray-700 p-3 rounded-lg border border-orange-200 dark:border-gray-600">
+                <label class="block text-sm font-bold text-orange-800 dark:text-orange-300 mb-1">
+                    Weight of 1 Piece (in Kg)
+                </label>
+                <input formControlName="weightPerPiece" type="number" step="0.001" placeholder="e.g. 0.020 for Rasgulla"
+                    class="w-full p-2 border border-orange-300 rounded-lg dark:bg-gray-800 dark:text-white">
+                <p class="text-xs text-orange-600 dark:text-orange-400 mt-1">
+                    Base Price: ₹{{ sweetForm.get('price')?.value }} / Kg <br>
+                    Piece Price will be: ₹{{ (sweetForm.get('price')?.value || 0) *
+                    (sweetForm.get('weightPerPiece')?.value || 0) | number:'1.0-2' }}
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <select formControlName="category"
+                    class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
+                    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                </select>
+                <input formControlName="tag" placeholder="Tag (e.g. Best Seller)"
+                    class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
+            </div>
+
+            <input formControlName="imageUrl" placeholder="Image URL"
+                class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
+
+            <button type="submit" [disabled]="sweetForm.invalid"
+                class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg">
+                {{ isEditing() ? 'Update Product' : 'Create Product' }}
+            </button>
+
+        </form>
+    </div>
+</div>

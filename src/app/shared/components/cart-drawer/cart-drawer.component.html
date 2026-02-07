@@ -1,56 +1,70 @@
-<div 
-  *ngIf="isCartOpen()" 
-  class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-opacity"
+<div *ngIf="isCartOpen()" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-opacity"
   (click)="closeCart()">
 </div>
 
-<div 
+<div
   class="cart-drawer fixed top-0 right-0 h-full w-full md:w-96 bg-white dark:bg-gray-900 z-[60] shadow-2xl transition-transform duration-300 ease-in-out flex flex-col"
   [ngClass]="isCartOpen() ? 'translate-x-0' : 'translate-x-full'">
-  
-  <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-900 transition-colors">
+
+  <div
+    class="px-6 py-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-900 transition-colors">
     <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
       <span>🛍️</span> Your Cart
     </h2>
-    <button (click)="closeCart()" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <button (click)="closeCart()"
+      class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
     </button>
   </div>
 
   <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-white dark:bg-gray-900 transition-colors">
-    
+
     <div *ngIf="cartItems().length === 0" class="flex flex-col items-center justify-center h-full text-gray-400">
       <span class="text-6xl mb-4">🛒</span>
       <p class="text-lg font-medium">Your cart is empty.</p>
-      <button (click)="closeCart();" routerLink="/menu" class="mt-4 text-orange-600 font-semibold hover:underline">Start Shopping</button>
+      <button (click)="closeCart();" routerLink="/menu" class="mt-4 text-orange-600 font-semibold hover:underline">Start
+        Shopping</button>
     </div>
 
-    <div *ngFor="let item of cartItems()" class="flex gap-4 p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm transition-colors">
+    <div *ngFor="let item of cartItems()"
+      class="flex gap-4 p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm transition-colors">
       <img [src]="item.sweet.imageUrl" [alt]="item.sweet.name" class="w-20 h-20 object-cover rounded-lg">
-      
+
       <div class="flex-1">
         <h3 class="font-bold text-gray-800 dark:text-white">{{ item.sweet.name }}</h3>
-        <p class="text-orange-600 dark:text-orange-400 font-semibold">₹{{ item.sweet.price }}</p>
-        
+
+        <div class="my-1">
+          <span class="text-orange-600 dark:text-orange-400 font-bold text-lg">
+            ₹{{ (item.sweet.price * item.quantity) | number:'1.0-2' }}
+          </span>
+          <div class="text-xs text-gray-500 dark:text-gray-400">
+            {{ item.quantity }} {{ item.sweet.unit }} × ₹{{ item.sweet.price }} / {{ item.sweet.unit }}
+          </div>
+        </div>
         <div class="flex justify-between items-center mt-2">
-          <div class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 px-2 py-1 rounded-lg border border-gray-200 dark:border-gray-600">
-            <button (click)="cartService.removeFromCart(item.sweet.id)" class="text-gray-500 dark:text-gray-300 hover:text-red-500 font-bold">-</button>
-            <span class="text-sm font-bold text-gray-700 dark:text-white w-4 text-center">{{ item.quantity }}</span>
-            <button (click)="cartService.addToCart(item.sweet)" class="text-gray-500 dark:text-gray-300 hover:text-green-600 font-bold">+</button>
+          <div
+            class="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 px-2 py-1 rounded-lg border border-gray-200 dark:border-gray-600">
+            <button (click)="cartService.removeFromCart(item.sweet.id)"
+              class="text-gray-500 dark:text-gray-300 hover:text-red-500 font-bold px-2">-</button>
+            <span class="text-sm font-bold text-gray-700 dark:text-white min-w-[1rem] text-center">{{ item.quantity
+              }}</span>
+            <button (click)="cartService.addToCart(item.sweet)"
+              class="text-gray-500 dark:text-gray-300 hover:text-green-600 font-bold px-2">+</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="cartItems().length > 0" class="p-6 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] transition-colors">
+  <div *ngIf="cartItems().length > 0"
+    class="p-6 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] transition-colors">
     <div class="flex justify-between text-lg font-bold text-gray-800 dark:text-white mb-4">
       <span>Total:</span>
-      <span>₹{{ totalPrice() }}</span>
+      <span>₹{{ totalPrice() | number:'1.0-2' }}</span>
     </div>
-    <button 
-      routerLink="/checkout" 
-      (click)="closeCart()" 
+    <button routerLink="/checkout" (click)="closeCart()"
       class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl shadow-lg transition-transform active:scale-95 text-lg">
       Proceed to Checkout
     </button>

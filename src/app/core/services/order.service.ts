@@ -17,4 +17,10 @@ export class OrderService {
   getOrders() {
     return this.http.get<Order[]>(this.apiUrl);
   }
+
+  updateOrderStatus(id: number, status: string) {
+    return this.http.put(`${this.apiUrl}/${id}/status`, JSON.stringify(status), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 }

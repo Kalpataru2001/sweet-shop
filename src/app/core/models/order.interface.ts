@@ -12,5 +12,6 @@ export interface Order {
   customerAddress: string;
   totalAmount: number;
   orderDate?: string;
+  status?: string;
   orderItems: OrderItemPayload[];
 }

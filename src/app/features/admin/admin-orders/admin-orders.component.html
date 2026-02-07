@@ -1,9 +1,20 @@
 <div class="container mx-auto pt-32 px-6">
   <div class="flex justify-between items-center mb-6">
     <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Owner Dashboard</h2>
-    <button (click)="loadOrders()" class="text-orange-600 hover:text-orange-700 font-medium text-sm flex items-center gap-2">
-      <span>↻</span> Refresh
-    </button>
+  
+    <div class="flex gap-4">
+  
+      <button routerLink="/admin/inventory"
+        class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg shadow-md transition-colors flex items-center gap-2">
+        <span>📦</span> Manage Inventory
+      </button>
+  
+      <button (click)="loadOrders()"
+        class="text-orange-600 hover:text-orange-700 font-medium text-sm flex items-center gap-2 bg-orange-50 px-4 py-2 rounded-lg">
+        <span>↻</span> Refresh
+      </button>
+    </div>
+  
   </div>
 
   <div *ngIf="loading()" class="flex flex-col items-center justify-center py-20">
@@ -11,47 +22,109 @@
     <p class="text-gray-500 animate-pulse">Fetching latest orders...</p>
   </div>
 
-  <div *ngIf="!loading()" class="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
-    <table class="w-full text-left">
-      <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200 uppercase text-sm">
-        <tr>
-          <th class="py-4 px-6">Date</th>
-          <th class="py-4 px-6">Customer</th>
-          <th class="py-4 px-6">Phone</th>
-          <th class="py-4 px-6">Address</th>
-          <th class="py-4 px-6 text-right">Total</th>
-          <th class="py-4 px-6 text-center">Action</th> </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-100 dark:divide-gray-600">
-        <tr *ngFor="let order of orders()" class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-          <td class="py-4 px-6 text-gray-500 dark:text-gray-400">
-            {{ order.orderDate || 'Now' | date:'medium' }}
-          </td>
-          <td class="py-4 px-6 font-medium text-gray-800 dark:text-white">
-            {{ order.customerName }}
-          </td>
-          <td class="py-4 px-6 text-gray-500 dark:text-gray-400">
-            {{ order.customerPhone }}
-          </td>
-          <td class="py-4 px-6 text-gray-500 dark:text-gray-400 max-w-xs truncate">
-            {{ order.customerAddress }}
-          </td>
-          <td class="py-4 px-6 text-right font-bold text-orange-600">
-            ₹{{ order.totalAmount }}
-          </td>
-          
-          <td class="py-4 px-6 text-center">
-            <button (click)="viewOrderDetails(order)" 
-              class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded transition">
-              View Items
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    
-    <div *ngIf="orders().length === 0" class="p-8 text-center text-gray-500">
-      No orders received yet.
+  <div *ngIf="!loading()"
+    class="w-full overflow-hidden rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800">
+  
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="py-4 px-6 whitespace-nowrap">Date</th>
+            <th class="py-4 px-6 whitespace-nowrap">Customer</th>
+            <th class="py-4 px-6 whitespace-nowrap">Phone</th>
+            <th class="py-4 px-6 whitespace-nowrap">Address</th>
+            <th class="py-4 px-6 text-right whitespace-nowrap">Total</th>
+            <th class="py-4 px-6 text-center whitespace-nowrap">Status</th>
+            <th class="py-4 px-6 text-center whitespace-nowrap sticky right-0 bg-gray-100 dark:bg-gray-700 shadow-l">
+              Actions</th>
+          </tr>
+        </thead>
+  
+        <tbody class="divide-y divide-gray-100 dark:divide-gray-600">
+          <tr *ngFor="let order of paginatedOrders()" class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+  
+            <td class="py-4 px-6 text-gray-500 dark:text-gray-400 whitespace-nowrap text-sm">
+              {{ order.orderDate || 'Now' | date:'mediumDate' }}<br>
+              <span class="text-xs">{{ order.orderDate || 'Now' | date:'shortTime' }}</span>
+            </td>
+  
+            <td class="py-4 px-6 font-medium text-gray-800 dark:text-white whitespace-nowrap">
+              {{ order.customerName }}
+            </td>
+  
+            <td class="py-4 px-6 text-gray-500 dark:text-gray-400 whitespace-nowrap">
+              {{ order.customerPhone }}
+            </td>
+  
+            <td class="py-4 px-6 text-gray-500 dark:text-gray-400 text-sm">
+              <div class="max-w-[200px] truncate" title="{{ order.customerAddress }}">
+                {{ order.customerAddress }}
+              </div>
+            </td>
+  
+            <td class="py-4 px-6 text-right font-bold text-orange-600 whitespace-nowrap">
+              ₹{{ order.totalAmount }}
+            </td>
+  
+            <td class="py-4 px-6 text-center whitespace-nowrap">
+              <span [ngClass]="{
+                'bg-yellow-100 text-yellow-800': order.status === 'Pending' || !order.status,
+                'bg-green-100 text-green-800': order.status === 'Delivered',
+                'bg-red-100 text-red-800': order.status === 'Cancelled'
+              }" class="px-3 py-1 rounded-full text-xs font-bold uppercase inline-block min-w-[80px]">
+                {{ order.status || 'Pending' }}
+              </span>
+            </td>
+  
+            <td
+              class="py-4 px-6 text-center whitespace-nowrap sticky right-0 bg-white dark:bg-gray-800 shadow-[-10px_0_15px_-5px_rgba(0,0,0,0.1)]">
+              <div class="flex justify-center items-center gap-2">
+                <button (click)="viewOrderDetails(order)"
+                  class="bg-blue-100 hover:bg-blue-200 text-blue-700 p-2 rounded-lg transition shadow-sm"
+                  title="View Details">
+                  👁️
+                </button>
+  
+                <div *ngIf="!order.status || order.status === 'Pending'" class="flex gap-2">
+                  <button (click)="updateStatus(order.id!, 'Delivered')"
+                    class="bg-green-100 hover:bg-green-200 text-green-700 p-2 rounded-lg transition shadow-sm"
+                    title="Mark Delivered">
+                    ✅
+                  </button>
+  
+                  <button (click)="updateStatus(order.id!, 'Cancelled')"
+                    class="bg-red-100 hover:bg-red-200 text-red-700 p-2 rounded-lg transition shadow-sm"
+                    title="Cancel Order">
+                    ❌
+                  </button>
+                </div>
+              </div>
+            </td>
+  
+          </tr>
+        </tbody>
+      </table>
+      <div
+        class="flex items-center justify-between px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+      
+        <span class="text-sm text-gray-500 dark:text-gray-400">
+          Showing page <span class="font-bold">{{ currentPage() }}</span> of <span class="font-bold">{{ totalPages() }}</span>
+          ({{ orders().length }} total orders)
+        </span>
+      
+        <div class="flex gap-2">
+          <button (click)="prevPage()" [disabled]="currentPage() === 1"
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
+            Previous
+          </button>
+      
+          <button (click)="nextPage()" [disabled]="currentPage() === totalPages()"
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
+            Next
+          </button>
+        </div>
+
+      </div>
     </div>
   </div>
 
