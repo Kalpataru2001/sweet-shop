@@ -29,36 +29,57 @@ export class CheckoutComponent {
 
   onSubmit() {
     if (this.checkoutForm.valid) {
-      this.isSubmitting = true; // Start loading
+      
+      // 1. Get the current items from the Cart Signal
+      const currentItems = this.cartService.getCartItems()();
 
-      // 1. Prepare the Order Data
+      // Safety check: Prevent ordering if cart is empty
+      if (currentItems.length === 0) {
+        alert("Your cart is empty! Please add some sweets.");
+        return;
+      }
+
+      this.isSubmitting = true; // Start loading spinner
+
+      // 2. Prepare the Order Data (Exact match for C# Order Model)
       const orderData = {
         customerName: this.checkoutForm.value.fullName!,
         customerPhone: this.checkoutForm.value.phone!,
         customerAddress: this.checkoutForm.value.address!,
-        totalAmount: this.cartService.totalPrice()
+        totalAmount: this.cartService.totalPrice(),
+        
+        // --- VITAL FIX: Map CartItems to the Backend's "OrderItems" format ---
+        orderItems: currentItems.map(item => ({
+          sweetId: item.sweet.id,   // Must match C# "SweetId"
+          quantity: item.quantity,
+          price: item.sweet.price   // Price at time of purchase
+        }))
+        // ---------------------------------------------------------------------
       };
 
-      // 2. Send to API
+      // 3. Send to API
       this.orderService.placeOrder(orderData).subscribe({
         next: (response) => {
-          console.log('Order Success:', response);
+          console.log('✅ Order Placed Successfully:', response);
           this.isSubmitting = false;
-          this.orderPlaced = true;
-          this.cartService.clearCart(); // Clear the cart on success
+          this.orderPlaced = true; // Shows the Success UI
+          
+          this.cartService.clearCart(); // Clear the cart now that order is saved
 
-          // Redirect after 3 seconds
+          // Redirect to Home after 3 seconds
           setTimeout(() => {
             this.router.navigate(['/']);
           }, 3000);
         },
         error: (err) => {
-          console.error('Order Failed:', err);
+          console.error('❌ Order Failed:', err);
           this.isSubmitting = false;
-          alert('Failed to place order. Please try again.');
+          alert('Failed to place order. Please check your connection.');
         }
       });
+
     } else {
+      // If form is invalid, highlight the errors
       this.checkoutForm.markAllAsTouched();
     }
   }

@@ -2,89 +2,76 @@
     'bg-white/90 dark:bg-gray-900/95 backdrop-blur-md shadow-sm py-2': isScrolled,
     'bg-transparent py-4': !isScrolled
   }">
-    <div class="container mx-auto px-6 flex justify-between items-center">
+  <div class="container mx-auto px-6 flex justify-between items-center">
 
-        <a (click)="goHome()" class="text-2xl font-bold tracking-wider flex items-center gap-2 group cursor-pointer">
-            <span class="text-orange-600 group-hover:rotate-12 transition-transform duration-300">🍬</span>
+    <a (click)="goHome()" class="text-2xl font-bold tracking-wider flex items-center gap-2 group cursor-pointer">
+      <span class="text-orange-600 group-hover:rotate-12 transition-transform duration-300">🍬</span>
+      <span class="text-gray-900 dark:text-white transition-colors">
+        Sweet<span class="text-orange-600">Shop</span>
+      </span>
+    </a>
 
-            <span class="text-gray-900 dark:text-white transition-colors">
-                Sweet<span class="text-orange-600">Shop</span>
-            </span>
-        </a>
-
-        <div class="hidden md:flex items-center space-x-8">
-
-            <a (click)="goHome()"
-                class="cursor-pointer text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors duration-300">
-                Home
-            </a>
-
-            <a routerLink="/menu" routerLinkActive="text-orange-600 font-bold"
-                class="cursor-pointer text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors duration-300">
-                Menu
-            </a>
-
-            <a routerLink="/about" routerLinkActive="text-orange-600 font-bold"
-                class="cursor-pointer text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors duration-300">
-                About
-            </a>
-
-            <a routerLink="/contact" routerLinkActive="text-orange-600 font-bold"
-                class="cursor-pointer text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors duration-300">
-                Contact
-            </a>
-
-            <button (click)="themeService.toggleTheme()"
-                class="p-2 text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors">
-                <svg *ngIf="themeService.isDarkMode()" class="w-6 h-6 text-yellow-400 animate-spin-slow" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                <svg *ngIf="!themeService.isDarkMode()" class="w-6 h-6 text-gray-700" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-            </button>
-
-            <button (click)="cartService.toggleCart()"
-                class="relative p-2 text-gray-700 dark:text-gray-200 hover:text-orange-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                </svg>
-                <span *ngIf="totalItems() > 0"
-                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-                    {{ totalItems() }}
-                </span>
-            </button>
-
-            <button routerLink="/menu"
-                class="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-full shadow-lg hover:shadow-orange-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
-                Order Now
-            </button>
-
-        </div>
-
-        <button (click)="toggleMobileMenu()" class="md:hidden focus:outline-none text-gray-800">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"></path>
-                <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </button>
+    <div class="hidden md:flex items-center space-x-8">
+      <a (click)="goHome()" class="cursor-pointer text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors">Home</a>
+      
+      <a routerLink="/menu" routerLinkActive="text-orange-600 font-bold" class="cursor-pointer text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors">Menu</a>
+      
+      <a routerLink="/about" routerLinkActive="text-orange-600 font-bold" class="cursor-pointer text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors">About</a>
+      
+      <a routerLink="/contact" routerLinkActive="text-orange-600 font-bold" class="cursor-pointer text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors">Contact</a>
+      
+      <a routerLink="/admin" routerLinkActive="text-orange-600 font-bold" class="cursor-pointer text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors">Owner</a>
     </div>
 
-    <div *ngIf="isMobileMenuOpen"
-        class="md:hidden bg-white/95 backdrop-blur-xl absolute w-full shadow-xl border-t border-gray-100">
-        <div class="flex flex-col px-6 py-4 space-y-4 text-gray-800 font-medium">
-            <a routerLink="/" (click)="toggleMobileMenu()" class="hover:text-orange-600">Home</a>
-            <a routerLink="/menu" (click)="toggleMobileMenu()" class="hover:text-orange-600">Menu</a>
-            <a routerLink="/about" (click)="toggleMobileMenu()" class="hover:text-orange-600">About</a>
-            <a routerLink="/contact" (click)="toggleMobileMenu()" class="hover:text-orange-600">Contact</a>
-        </div>
+    <div class="flex items-center space-x-4">
+
+      <button (click)="themeService.toggleTheme()" class="p-2 text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors">
+        <svg *ngIf="themeService.isDarkMode()" class="w-6 h-6 text-yellow-400 animate-spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg *ngIf="!themeService.isDarkMode()" class="w-6 h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+
+      <button (click)="cartService.toggleCart()" class="relative p-2 text-gray-700 dark:text-gray-200 hover:text-orange-600 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+        </svg>
+        <span *ngIf="totalItems() > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+          {{ totalItems() }}
+        </span>
+      </button>
+
+      <button routerLink="/menu" class="hidden md:block bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-full shadow-lg hover:shadow-orange-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
+        Order Now
+      </button>
+
+      <button (click)="toggleMobileMenu()" class="md:hidden focus:outline-none text-gray-800 dark:text-gray-200">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path *ngIf="!isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          <path *ngIf="isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
     </div>
+  </div>
+
+  <div *ngIf="isMobileMenuOpen()" class="md:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl absolute w-full shadow-xl border-t border-gray-100 dark:border-gray-800 transition-all">
+    <div class="flex flex-col px-6 py-4 space-y-4 font-medium">
+      <a (click)="goHome()" class="text-gray-800 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500 cursor-pointer">Home</a>
+      
+      <a routerLink="/menu" (click)="closeMenu()" routerLinkActive="text-orange-600" class="text-gray-800 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500">Menu</a>
+      
+      <a routerLink="/about" (click)="closeMenu()" routerLinkActive="text-orange-600" class="text-gray-800 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500">About</a>
+      
+      <a routerLink="/contact" (click)="closeMenu()" routerLinkActive="text-orange-600" class="text-gray-800 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500">Contact</a>
+      
+      <a routerLink="/admin" (click)="closeMenu()" routerLinkActive="text-orange-600" class="text-gray-800 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-500">Owner Dashboard</a>
+      
+      <button routerLink="/menu" (click)="closeMenu()" class="w-full bg-orange-600 text-white py-3 rounded-lg shadow-md hover:bg-orange-700">
+        Order Now
+      </button>
+    </div>
+  </div>
 </nav>

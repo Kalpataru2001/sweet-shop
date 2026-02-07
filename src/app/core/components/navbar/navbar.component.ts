@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { ThemeService } from '../../services/theme.service';
@@ -13,34 +13,37 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class NavbarComponent {
   themeService = inject(ThemeService);
-  
-  isScrolled = false;
-  isMobileMenuOpen = false;
   cartService = inject(CartService);
+  private router = inject(Router);
+
+  // Signals
+  isMobileMenuOpen = signal(false);
   totalItems = this.cartService.totalItems;
 
-  private router = inject(Router);
-  
-  // Listen for scroll events on the window
+  // State
+  isScrolled = false;
+
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.isScrolled = window.scrollY > 20;
   }
 
   toggleMobileMenu() {
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    this.isMobileMenuOpen.update(val => !val);
+  }
+
+  closeMenu() {
+    this.isMobileMenuOpen.set(false);
   }
 
   goHome() {
-    // Navigate to home page first...
+    this.closeMenu(); // Ensure menu closes if used on mobile
     this.router.navigate(['/']).then(() => {
-      // ...then wait a tiny moment for layout shift, and scroll to top.
       setTimeout(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       }, 50);
     });
   }
-
   scrollToTop() {
     // Increased to 100ms to allow the Home page to fully load first
     setTimeout(() => {

@@ -15,6 +15,8 @@ orderService = inject(OrderService);
   orders = signal<Order[]>([]);
   loading = signal<boolean>(true);
 
+  selectedOrder: Order | null = null;
+
   constructor() {
     this.loadOrders();
   }
@@ -32,5 +34,13 @@ orderService = inject(OrderService);
         this.loading.set(false); // Stop loading even if it fails
       }
     });
+  }
+  viewOrderDetails(order: Order) {
+    this.selectedOrder = order;
+  }
+
+  // NEW: Closes the modal
+  closeModal() {
+    this.selectedOrder = null;
   }
 }
