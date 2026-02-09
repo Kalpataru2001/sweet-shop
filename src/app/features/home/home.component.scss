@@ -1,19 +1,55 @@
-/* Custom tweaks if needed */
-:host {
-  display: block;
-}
-
-/* Infinite Marquee Animation */
+/* Marquee Animation */
 @keyframes infinite-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 .animate-infinite-scroll {
-  animation: infinite-scroll 25s linear infinite;
-  width: max-content;
+  animation: infinite-scroll 40s linear infinite;
+  /* Pause on hover for readability */
+  &:hover {
+    animation-play-state: paused;
+  }
 }
 
-.animate-infinite-scroll:hover {
-  animation-play-state: paused;
+/* Button Shimmer Effect */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Floating Animation for Badge */
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 4s ease-in-out infinite;
+}
+
+/* Gradient Text Animation */
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 5s ease infinite;
+}
+
+/* Gentle Pulse for Background Blobs */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
 }
