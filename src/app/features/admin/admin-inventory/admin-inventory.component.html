@@ -109,10 +109,43 @@
                     class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
             </div>
 
-            <input formControlName="imageUrl" placeholder="Image URL"
-                class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Product Image</label>
+            
+                <div class="flex items-center gap-4">
+                    <input type="file" (change)="onFileSelected($event)" accept="image/*" class="block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-orange-50 file:text-orange-700
+                    hover:file:bg-orange-100
+                    cursor-pointer
+                  " />
+                </div>
+            
+                <input formControlName="imageUrl" type="hidden">
+            
+                <div *ngIf="imagePreview()"
+                    class="mt-2 relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200 shadow-sm group">
+            
+                    <img [src]="imagePreview()" class="w-full h-full object-cover">
+            
+                    <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all"></div>
+            
+                    <span *ngIf="selectedFile"
+                        class="absolute bottom-0 left-0 right-0 bg-blue-600 text-white text-[10px] font-bold text-center py-1">
+                        New (Pending)
+                    </span>
+            
+                    <span *ngIf="!selectedFile"
+                        class="absolute bottom-0 left-0 right-0 bg-green-600 text-white text-[10px] font-bold text-center py-1">
+                        Current
+                    </span>
+            
+                </div>
+            </div>
 
-            <button type="submit" [disabled]="sweetForm.invalid"
+            <button type="submit"
                 class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg">
                 {{ isEditing() ? 'Update Product' : 'Create Product' }}
             </button>
