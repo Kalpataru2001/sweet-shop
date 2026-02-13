@@ -1,9 +1,17 @@
 const fs = require('fs');
+const path = require('path');
 
-// Path where the file should be created
-const targetPath = './src/environments/environment.prod.ts';
+// Define the path
+const dirPath = './src/environments';
+const filePath = './src/environments/environment.prod.ts';
 
-// The content of the file
+// 1. Create the folder if it doesn't exist (CRITICAL STEP)
+if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+    console.log(`Created directory: ${dirPath}`);
+}
+
+// 2. Define the content
 const envConfigFile = `export const environment = {
   production: true,
   apiUrl: '${process.env.apiUrl || ""}',
@@ -12,11 +20,12 @@ const envConfigFile = `export const environment = {
 };
 `;
 
-// Write the file
-fs.writeFile(targetPath, envConfigFile, function (err) {
+// 3. Write the file
+fs.writeFile(filePath, envConfigFile, function (err) {
   if (err) {
-    console.log(err);
+    console.error('❌ Error creating environment file:', err);
+    process.exit(1); // Fail the build if we can't write
   } else {
-    console.log(`Output generated at ${targetPath}`);
+    console.log(`✅ Environment file generated at ${filePath}`);
   }
 });
