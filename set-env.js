@@ -4,7 +4,7 @@ const path = require('path');
 // Define the paths
 const dirPath = './src/environments';
 const prodFilePath = './src/environments/environment.prod.ts';
-const devFilePath = './src/environments/environment.ts'; // 👈 We need this one too!
+const devFilePath = './src/environments/environment.ts';
 
 // 1. Create the folder if it doesn't exist
 if (!fs.existsSync(dirPath)) {
@@ -12,12 +12,13 @@ if (!fs.existsSync(dirPath)) {
     console.log(`Created directory: ${dirPath}`);
 }
 
-// 2. Define the content (Use Production values for both in Netlify)
+// 2. Define the content 
+// ⚠️ FIX: We use UPPERCASE keys (SUPABASE_URL) to match your Angular Service code
 const envConfigFile = `export const environment = {
   production: true,
   apiUrl: '${process.env.apiUrl || ""}',
-  supabaseUrl: '${process.env.SUPABASE_URL}',
-  supabaseKey: '${process.env.SUPABASE_KEY}'
+  SUPABASE_URL: '${process.env.SUPABASE_URL}',
+  SUPABASE_KEY: '${process.env.SUPABASE_KEY}'
 };
 `;
 
