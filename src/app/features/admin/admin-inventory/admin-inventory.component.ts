@@ -5,6 +5,7 @@ import { SweetService } from '../../../core/services/sweet.service';
 import { Sweet } from '../../../core/models/sweet.interface';
 import { RupeeFormatPipe } from '../../../shared/pipes/rupee-format.pipe';
 import { ImageUploadService } from '../../../core/services/image-upload.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-admin-inventory',
@@ -14,6 +15,7 @@ import { ImageUploadService } from '../../../core/services/image-upload.service'
   styles: []
 })
 export class AdminInventoryComponent {
+  authService = inject(AuthService);
   imageService = inject(ImageUploadService);
   sweetService = inject(SweetService);
   fb = inject(FormBuilder);
@@ -173,4 +175,7 @@ export class AdminInventoryComponent {
     this.selectedFile = null;
     this.imagePreview.set(null);
   }
+  logout() {
+  this.authService.logout();
+}
 }

@@ -9,28 +9,26 @@ import { AdminOrdersComponent } from './features/admin/admin-orders/admin-orders
 import { AdminLoginComponent } from './features/admin/admin-login/admin-login.component';
 import { authGuard } from './core/guards/auth.guard';
 import { AdminInventoryComponent } from './features/admin/admin-inventory/admin-inventory.component';
+import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
     {
         path: '',
         component: MainLayoutComponent,
         children: [
-            { path: '', component: HomeComponent }, // Default route loads Home
-            // We will add 'menu' and 'contact' here later
+            { path: '', component: HomeComponent }, 
             { path: 'menu', component: MenuComponent },
             { path: 'about', component: AboutComponent },
             { path: 'contact', component: ContactComponent },
             { path: 'checkout', component: CheckoutComponent },
-            { path: 'admin/login', component: AdminLoginComponent },
-            {
+            { path: 'admin/login', component: LoginComponent },
+           {
                 path: 'admin',
-                component: AdminOrdersComponent,
-                canActivate: [authGuard] 
-            },
-            {
-                path: 'admin/inventory',
-                component: AdminInventoryComponent,
-                canActivate: [authGuard]
+                canActivate: [authGuard], 
+                children: [
+                    { path: '', component: AdminOrdersComponent },
+                    { path: 'inventory', component: AdminInventoryComponent } 
+                ]
             },
 
             { path: '**', redirectTo: '' }

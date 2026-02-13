@@ -1,0 +1,34 @@
+<p>login works!</p>
+<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-200 dark:border-gray-700">
+        
+        <h2 class="text-3xl font-bold text-center text-orange-600 mb-2">Sweet Shop Admin</h2>
+        <p class="text-center text-gray-500 mb-8">Login to manage your inventory</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                <input formControlName="email" type="email" 
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none dark:bg-gray-700 dark:text-white"
+                    placeholder="admin@example.com">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                <input formControlName="password" type="password" 
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none dark:bg-gray-700 dark:text-white"
+                    placeholder="••••••••">
+            </div>
+
+            <div *ngIf="errorMessage" class="text-red-500 text-sm text-center bg-red-50 p-2 rounded">
+                {{ errorMessage }}
+            </div>
+
+            <button type="submit" [disabled]="loginForm.invalid"
+                class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
