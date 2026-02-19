@@ -3,11 +3,12 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { OrderService } from '../../../core/services/order.service';
 import { Order } from '../../../core/models/order.interface';
 import { RouterLink } from '@angular/router';
+import { DashboardStatsComponent } from '../components/dashboard-stats/dashboard-stats.component';
 
 @Component({
   selector: 'app-admin-orders',
   standalone: true,
-  imports: [CommonModule, DatePipe,RouterLink],
+  imports: [CommonModule, DatePipe,RouterLink, DashboardStatsComponent],
   templateUrl: './admin-orders.component.html',
   styleUrl: './admin-orders.component.scss'
 })

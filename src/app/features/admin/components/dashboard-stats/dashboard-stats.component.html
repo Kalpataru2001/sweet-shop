@@ -1,0 +1,20 @@
+<div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+    
+    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Top Selling Sweets</h3>
+    
+    <div class="h-[300px] flex justify-center">
+        <ngx-charts-bar-vertical
+            [view]="view"
+            [scheme]="colorScheme" 
+            [results]="single"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel">
+        </ngx-charts-bar-vertical>
+    </div>
+</div>
